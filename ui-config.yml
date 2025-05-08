@@ -1,0 +1,21 @@
+---
+antora:
+  name: modules
+  dir: www
+  modules:
+    - name: "01-create-an-image"
+      label: "Create An Image"
+      solveButton: true
+    - name: "02-deploy-an-image"
+      label: "Deploy An Image"
+      solveButton: true
+    - name: "03-add-software-to-image"
+      label: "Add Software To Image"
+      solveButton: true
+    - name: "04-apply-image"
+      label: "Apply Image"
+      solveButton: true
+
+tabs:
+  - name: ">_ terminal"
+    url: /wetty

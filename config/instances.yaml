@@ -1,0 +1,12 @@
+---
+virtualmachines:
+  - name: "rhel"
+    image: "virt-rhel-9-5-11-29-24"
+    memory: "2G"
+    cores: 1
+    image_size: "40G"
+    tags:
+      - key: "AnsibleGroup"
+        value: "bastions"
+    networks:
+      - default

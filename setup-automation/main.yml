@@ -50,7 +50,7 @@
     become: true
     register: r_result
     environment:
-      REGISTRY_PULL_TOKEN: "{{ lookup('ansible.builtin.env', 'REGISTRY_PULL_TOKEN') }"
+      REGISTRY_PULL_TOKEN: "{{ lookup('ansible.builtin.env', 'REGISTRY_PULL_TOKEN') }}"
 
   - name: Output script result
     ansible.builtin.debug:

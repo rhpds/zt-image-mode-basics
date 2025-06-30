@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # Log into terms based registry and stage bootc and bib images
-dnf -y install podman skopeo virt-install libvirt
+dnf -y install podman skopeo virt-install libvirt qemu-kvm
 systemctl enable --now libvirtd
 
 BOOTC_RHEL_VER=10.0

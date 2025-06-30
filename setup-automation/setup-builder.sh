@@ -2,7 +2,9 @@
 set -euxo pipefail
 
 # Log into terms based registry and stage bootc and bib images
-dnf -y install podman skopeo
+dnf -y install podman skopeo virt-install libvirtd
+systemctl enable --now libvirtd
+
 BOOTC_RHEL_VER=10.0
 #agent variable set BOOTC_RHEL_VERSION $BOOTC_RHEL_VER
 podman login -u='1979710|lb1054-ney' -p=${REGISTRY_PULL_TOKEN} registry.redhat.io

@@ -10,6 +10,9 @@ virtualmachines:
         value: "bastions"
     networks:
       - default
+    terminals:
+      - name: wetty_bootc_vm
+        command: /root/wait_for_bootc_vm.sh
     services:
       - name: builder-http
         ports:

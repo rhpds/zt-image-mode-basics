@@ -170,7 +170,7 @@ RUN systemctl enable httpd
 EOF
 
 
-cat <<EOF> /root/wait_for_bootc_vm.sh
+cat <<'EOF'> /root/wait_for_bootc_vm.sh
 echo "Waiting for VM 'bootc_vm' to be running..."
 VM_READY=false
 VM_STATE=""

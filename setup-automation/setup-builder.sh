@@ -159,7 +159,7 @@ cat <<EOF> ~/config.json
 EOF
 
 # create basic bootc containerfile
-cat <<EOF> Containerfile
+cat <<EOF> /root/Containerfile
 FROM registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER
 
 ADD etc /etc

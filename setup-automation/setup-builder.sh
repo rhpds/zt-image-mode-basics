@@ -5,7 +5,7 @@ set -euxo pipefail
 dnf -y install podman skopeo
 BOOTC_RHEL_VER=10.0
 #agent variable set BOOTC_RHEL_VERSION $BOOTC_RHEL_VER
-podman login -u='1979710|rhel-tmm' -p=${REG_SVC_ACCT} registry.redhat.io
+podman login -u='1979710|lb1054-ney' -p=${REGISTRY_PULL_TOKEN} registry.redhat.io
 podman pull registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER registry.redhat.io/rhel10/bootc-image-builder:$BOOTC_RHEL_VER
 
 # Some shortcuts for users
@@ -32,7 +32,7 @@ dnf install -y certbot
 # fuser -k 80/tcp
 
 # request certificates
-certbot certonly --standalone --preferred-challenges http -d ${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io --non-interactive --agree-tos -m trackbot@instruqt.com -v
+certbot certonly --standalone --preferred-challenges http -d builder-${GUID}.${DOMAIN} --non-interactive --agree-tos -m trackbot@instruqt.com -v
 
 # run a local registry with the provided certs
 podman run --privileged -d \

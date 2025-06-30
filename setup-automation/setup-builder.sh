@@ -173,11 +173,11 @@ EOF
 
 
 cat <<'EOF'> /root/wait_for_bootc_vm.sh
-echo "Waiting for VM 'bootc_vm' to be running..."
+echo "Waiting for VM 'bootc-vm' to be running..."
 VM_READY=false
 VM_STATE=""
 while true; do
-    VM_STATE=$(virsh domstate "bootc_vm" 2>/dev/null)
+    VM_STATE=$(virsh domstate "bootc-vm" 2>/dev/null)
     if [[ "$VM_STATE" == "running" ]]; then
         VM_READY=true
         break

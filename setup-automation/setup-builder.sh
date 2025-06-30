@@ -32,7 +32,7 @@ dnf install -y certbot
 # fuser -k 80/tcp
 
 # request certificates
-certbot certonly --standalone --preferred-challenges http -d builder-${GUID}.${DOMAIN} --non-interactive --agree-tos -m trackbot@instruqt.com -v
+certbot certonly --standalone --preferred-challenges http -d builder.${GUID}.${DOMAIN} --non-interactive --agree-tos -m trackbot@instruqt.com -v
 
 # run a local registry with the provided certs
 podman run --privileged -d \

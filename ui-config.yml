@@ -17,5 +17,5 @@ antora:
       solveButton: true
 
 tabs:
-  - name: ">_ terminal"
+  - name: "Build host"
     url: /wetty

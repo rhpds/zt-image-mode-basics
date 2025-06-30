@@ -1,30 +1,27 @@
 #!/bin/bash
 set -euxo pipefail
 
-subscription-manager config --rhsm.manage_repos=1
-subscription-manager register --activationkey=${ACTIVATION_KEY} --org=12451665 --force
-
 # Log into terms based registry and stage bootc and bib images
 dnf -y install podman skopeo
-BOOTC_RHEL_VER=9.5
-agent variable set BOOTC_RHEL_VERSION $BOOTC_RHEL_VER
+BOOTC_RHEL_VER=10.0
+#agent variable set BOOTC_RHEL_VERSION $BOOTC_RHEL_VER
 podman login -u='1979710|rhel-tmm' -p=${REG_SVC_ACCT} registry.redhat.io
-podman pull registry.redhat.io/rhel9/rhel-bootc:$BOOTC_RHEL_VER registry.redhat.io/rhel9/bootc-image-builder:$BOOTC_RHEL_VER
+podman pull registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER registry.redhat.io/rhel10/bootc-image-builder:$BOOTC_RHEL_VER
 
 # Some shortcuts for users
 # reglogin - uses podman secret to log into the terms based registry in case creds time out or initial pull fails
 # registry ENV variable -  the registry target created for the lab
-printf ${REG_SVC_ACCT} | podman secret create regpass -
-cat <<EOF >> /root/.bashrc
-export REGISTRY="${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io:5000"
-alias reglogin="podman login -u='1979710|rhel-tmm' --secret regpass registry.redhat.io"
-EOF
+#printf ${REG_SVC_ACCT} | podman secret create regpass -
+#cat <<EOF >> /root/.bashrc
+#export REGISTRY="${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io:5000"
+#alias reglogin="podman login -u='1979710|rhel-tmm' --secret regpass registry.redhat.io"
+#EOF
 
-echo "Adding wheel" > /root/post-run.log
-usermod -aG wheel rhel
+#echo "Adding wheel" > /root/post-run.log
+#usermod -aG wheel rhel
 
-echo "setting password" >> /root/post-run.log
-echo redhat | passwd --stdin rhel
+#echo "setting password" >> /root/post-run.log
+#echo redhat | passwd --stdin rhel
 
 # set up SSL for fully functioning registry
 # Enable EPEL for RHEL 9
@@ -53,11 +50,11 @@ mkdir -p ~/etc/sudoers.d/
 echo "%wheel  ALL=(ALL)   NOPASSWD: ALL" >> ~/etc/sudoers.d/wheel
 
 # create the etc/hosts override to let the target VM see the registry
-echo $(getent hosts ${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io) >> ~/etc/hosts
+#echo $(getent hosts ${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io) >> ~/etc/hosts
 
 # add hostname to runtime variable
 
-agent variable set CONTAINER_REGISTRY_ENDPOINT ${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io:5000
+#agent variable set CONTAINER_REGISTRY_ENDPOINT ${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io:5000
 
 # turn off complexity checks in target for passwords to ease the learner experience
 mkdir -p ~/etc/security
@@ -163,7 +160,7 @@ EOF
 
 # create basic bootc containerfile
 cat <<EOF> Containerfile
-FROM registry.redhat.io/rhel9/rhel-bootc:$BOOTC_RHEL_VER
+FROM registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER
 
 ADD etc /etc
 

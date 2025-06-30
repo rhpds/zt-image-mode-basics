@@ -1,7 +1,7 @@
 ---
 virtualmachines:
-  - name: "rhel"
-    image: "virt-rhel-9-5-11-29-24"
+  - name: "builder"
+    image: "rhel-10-0-06-17-25-2"
     memory: "2G"
     cores: 1
     image_size: "40G"

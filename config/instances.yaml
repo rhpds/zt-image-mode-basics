@@ -10,3 +10,16 @@ virtualmachines:
         value: "bastions"
     networks:
       - default
+    services:
+      - name: builder-http
+        ports:
+          - port: 80
+            protocol: TCP
+            targetPort: 80
+            name: builder-http
+    routes:
+      - name: builder-http
+        host: builder
+        service: builder-http
+        targetPort: 80
+        tls: false

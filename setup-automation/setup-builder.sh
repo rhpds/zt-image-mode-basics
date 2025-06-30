@@ -168,3 +168,29 @@ RUN dnf install -y httpd
 RUN systemctl enable httpd
 
 EOF
+
+
+cat <<EOF> /root/wait_for_bootc_vm.sh
+echo "Waiting for VM 'bootc_vm' to be running..."
+VM_READY=false
+while true; do
+    VM_STATE=$(virsh domstate "bootc_vm" 2>/dev/null)
+    if [[ "$VM_STATE" == "running" ]]; then
+        VM_READY=true
+        break
+    fi
+    sleep 10
+done
+echo "Waiting for SSH to be available..."
+NODE_READY=false
+while true; do
+    if ping -c 1 -W 1 "bootc-vm" &>/dev/null; then
+	NODE_READY=true
+	break
+    fi
+    sleep 10
+done
+sleep 5
+ssh root@bootc-vm
+EOF
+chmod u+x /root/wait_for_bootc_vm.sh

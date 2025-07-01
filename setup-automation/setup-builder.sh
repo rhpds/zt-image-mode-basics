@@ -1,13 +1,23 @@
 #!/bin/bash
 set -euxo pipefail
 
-# Log into terms based registry and stage bootc and bib images
-dnf -y install podman skopeo virt-install libvirt qemu-kvm
+# Install libvirt and configure nss domain resolution
+dnf -y install virt-install libvirt qemu-kvm libvirt-nss
 systemctl enable --now libvirtd
+sed -i 's/hosts:\s\+ files/& libvirt libvirt_guest/' /etc/nsswitch.conf
 
+# Log into terms based registry and stage bootc and bib images
+cat<<EOF> ~/.config/containers/auth.json
+{
+    "auths": {
+      "registry.redhat.io": {
+        "auth": "${REGISTRY_PULL_TOKEN}"
+      }
+    }
+  }
+EOF
+#podman login -u='1979710|lb1054-ney' -p=${REGISTRY_PULL_TOKEN} registry.redhat.io
 BOOTC_RHEL_VER=10.0
-#agent variable set BOOTC_RHEL_VERSION $BOOTC_RHEL_VER
-podman login -u='1979710|lb1054-ney' -p=${REGISTRY_PULL_TOKEN} registry.redhat.io
 podman pull registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER registry.redhat.io/rhel10/bootc-image-builder:$BOOTC_RHEL_VER
 
 # Some shortcuts for users
@@ -19,19 +29,10 @@ podman pull registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER registry.redhat
 #alias reglogin="podman login -u='1979710|rhel-tmm' --secret regpass registry.redhat.io"
 #EOF
 
-#echo "Adding wheel" > /root/post-run.log
-#usermod -aG wheel rhel
-
-#echo "setting password" >> /root/post-run.log
-#echo redhat | passwd --stdin rhel
-
 # set up SSL for fully functioning registry
 # Enable EPEL for RHEL 9
 dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 dnf install -y certbot
-
-# stop the process that is using TCP port 80; we need that port open for certbot
-# fuser -k 80/tcp
 
 # request certificates
 certbot certonly --standalone --preferred-challenges http -d builder.${GUID}.${DOMAIN} --non-interactive --agree-tos -m trackbot@instruqt.com -v

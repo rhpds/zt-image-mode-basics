@@ -76,7 +76,7 @@ any other application container. Let’s build this image with
 
 [source,bash,run]
 ----
-podman build -t [[ Instruqt-Var key="CONTAINER_REGISTRY_ENDPOINT" hostname="rhel" ]]/test-bootc .
+podman build -t builder.{guid}.{domain}:5000/test-bootc .
 ----
 
 Once built, bootc images use OCI standard container registries for
@@ -86,7 +86,7 @@ and more.
 
 [source,bash,run]
 ----
-podman push [[ Instruqt-Var key="CONTAINER_REGISTRY_ENDPOINT" hostname="rhel" ]]/test-bootc
+podman push builder.{guid}.{domain}:5000/test-bootc
 ----
 
 This is really all that is needed for a simple web server! We can add

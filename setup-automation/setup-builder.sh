@@ -195,6 +195,7 @@ while true; do
 	break
     fi
     sleep 10
+    VM_IP=$(virsh domifaddr "bootc-vm" 2>/dev/null | awk '/ipv4/ {print $4}' | cut -d'/' -f1)
 done
 sleep 5
 ssh core@${VM_IP}

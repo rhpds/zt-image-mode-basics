@@ -7,6 +7,7 @@ systemctl enable --now libvirtd
 sed -i 's/hosts:\s\+ files/& libvirt libvirt_guest/' /etc/nsswitch.conf
 
 # Log into terms based registry and stage bootc and bib images
+mkdir -p ~/.config/containers
 cat<<EOF> ~/.config/containers/auth.json
 {
     "auths": {

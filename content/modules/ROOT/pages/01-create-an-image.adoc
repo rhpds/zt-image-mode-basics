@@ -1,5 +1,8 @@
 Welcome to this lab experience for Red Hat Enterprise Linux.
 
+{lab_name}
+{domain}
+
 The system displayed beside this text is a Red Hat Enterprise Linux 9
 system registered with Subscription Manager.
 

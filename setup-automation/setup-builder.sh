@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # Install libvirt and configure nss domain resolution
-dnf -y install virt-install libvirt qemu-kvm libvirt-nss
+dnf -y install podman virt-install libvirt qemu-kvm libvirt-nss
 systemctl enable --now libvirtd
 sed -i 's/hosts:\s\+ files/& libvirt libvirt_guest/' /etc/nsswitch.conf
 

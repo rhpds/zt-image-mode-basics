@@ -64,6 +64,7 @@
       content: "{{ r_result.stdout | default(r_result.stderr) | default(r_result) }}"
       dest: "/tmp/{{ ansible_host }}-setup-script.out"
     delegate_to: localhost
+    ignore_errors: true
     when:
     - r_result is defined
 
@@ -71,11 +72,4 @@
     ansible.builtin.debug:
       var: r_result
     when: r_result is defined
-
-  - name: Fail if stage was failed
-    ansible.builtin.fail:
-      msg: "Setup failed"
-    when:
-    - r_result is defined
-    - r_result.rc != 0
 

@@ -181,11 +181,12 @@ while true; do
     VM_STATE=$(virsh domstate "bootc-vm" 2>/dev/null)
     if [[ "$VM_STATE" == "running" ]]; then
         VM_READY=true
+	sleep 10
         break
     fi
     sleep 10
 done
-VM_IP=$(virsh domifaddr "bootc_vm" 2>/dev/null | awk '/ipv4/ {print $4}' | cut -d'/' -f1)
+VM_IP=$(virsh domifaddr "bootc-vm" 2>/dev/null | awk '/ipv4/ {print $4}' | cut -d'/' -f1)
 echo "Waiting for SSH to be available..."
 NODE_READY=false
 while true; do

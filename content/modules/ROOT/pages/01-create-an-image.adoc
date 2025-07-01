@@ -74,7 +74,7 @@ Image mode uses OCI standard container tools to build bootc images, like
 any other application container. Let’s build this image with
 `+podman build+`.
 
-[source,bash,run]
+[source,bash,run,subs=attributes+]
 ----
 podman build -t builder.{guid}.{domain}:5000/test-bootc .
 ----
@@ -84,7 +84,7 @@ distribution. We are using a simple registry in this lab, but enterprise
 registries will provide ways to inspect contents, history, manage tags
 and more.
 
-[source,bash,run]
+[source,bash,run,subs=attributes+]
 ----
 podman push builder.{guid}.{domain}:5000/test-bootc
 ----

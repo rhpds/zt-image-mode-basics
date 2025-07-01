@@ -26,7 +26,7 @@ With our changes in the Containerfile, we can re-run the
 
 [source,bash,run]
 ----
-podman build -t [[ Instruqt-Var key="CONTAINER_REGISTRY_ENDPOINT" hostname="rhel" ]]/test-bootc .
+podman build -t builder.{guid}.{domain}:5000/test-bootc .
 ----
 
 Since the `+RUN+` command to install software happens after the `+ADD+`
@@ -42,7 +42,7 @@ registry.
 
 [source,bash,run]
 ----
-podman push [[ Instruqt-Var key="CONTAINER_REGISTRY_ENDPOINT" hostname="rhel" ]]/test-bootc
+podman push builder.{guid}.{domain}:5000/test-bootc
 ----
 
 In the next step, we’ll look at how to update a running system from the

@@ -17,16 +17,16 @@ ____
 [!NOTE] This operation will take about 4 minutes to complete.
 ____
 
-[source,bash,run]
+[source,bash,run,subs=attributes+]
 ----
 podman run --rm --privileged \
         --volume .:/output \
         --volume ./config.json:/config.json \
         --volume /var/lib/containers/storage:/var/lib/containers/storage \
-        registry.redhat.io/rhel9/bootc-image-builder:9.5 \
+        registry.redhat.io/rhel10/bootc-image-builder:10.0 \
         --type qcow2 \
         --config config.json \
-         [[ Instruqt-Var key="CONTAINER_REGISTRY_ENDPOINT" hostname="rhel" ]]/test-bootc
+         builder.{guid}.{domain}:5000/test-bootc
 ----
 
 This tool is a containerized version of image builder that includes the
@@ -49,7 +49,7 @@ default libvirt storage pool.
 
 [source,bash,run]
 ----
-cp qcow2/disk.qcow2 /var/lib/libvirt/images/bootc[[ Instruqt-Var key="BOOTC_RHEL_VERSION" hostname="rhel" ]]-vm.qcow2
+cp qcow2/disk.qcow2 /var/lib/libvirt/images/bootc-vm.qcow2
 ----
 
 Using `+virt-install+` we can define a simple VM and import the new disk
@@ -58,7 +58,7 @@ image.
 [source,bash,run]
 ----
 virt-install --name bootc-vm \
---disk /var/lib/libvirt/images/bootc[[ Instruqt-Var key="BOOTC_RHEL_VERSION" hostname="rhel" ]]-vm.qcow2 \
+--disk /var/lib/libvirt/images/bootc-vm.qcow2 \
 --import \
 --memory 2048 \
 --graphics none \

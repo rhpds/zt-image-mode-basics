@@ -2,10 +2,12 @@
 set -euxo pipefail
 
 # Log into terms based registry and stage bootc and bib images
-dnf -y install podman skopeo
+dnf -y install podman skopeo virt-install libvirt qemu-kvm
+systemctl enable --now libvirtd
+
 BOOTC_RHEL_VER=10.0
 #agent variable set BOOTC_RHEL_VERSION $BOOTC_RHEL_VER
-podman login -u='1979710|rhel-tmm' -p=${REG_SVC_ACCT} registry.redhat.io
+podman login -u='1979710|lb1054-ney' -p=${REGISTRY_PULL_TOKEN} registry.redhat.io
 podman pull registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER registry.redhat.io/rhel10/bootc-image-builder:$BOOTC_RHEL_VER
 
 # Some shortcuts for users
@@ -32,14 +34,14 @@ dnf install -y certbot
 # fuser -k 80/tcp
 
 # request certificates
-certbot certonly --standalone --preferred-challenges http -d ${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io --non-interactive --agree-tos -m trackbot@instruqt.com -v
+certbot certonly --standalone --preferred-challenges http -d builder.${GUID}.${DOMAIN} --non-interactive --agree-tos -m trackbot@instruqt.com -v
 
 # run a local registry with the provided certs
 podman run --privileged -d \
   --name registry \
   -p 5000:5000 \
-  -v /etc/letsencrypt/live/${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io/fullchain.pem:/certs/fullchain.pem \
-  -v /etc/letsencrypt/live/${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io/privkey.pem:/certs/privkey.pem \
+  -v /etc/letsencrypt/live/builder.${GUID}.${DOMAIN}/fullchain.pem:/certs/fullchain.pem \
+  -v /etc/letsencrypt/live/builder.${GUID}.${DOMAIN}/privkey.pem:/certs/privkey.pem \
   -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/fullchain.pem \
   -e REGISTRY_HTTP_TLS_KEY=/certs/privkey.pem \
   registry:2
@@ -159,7 +161,7 @@ cat <<EOF> ~/config.json
 EOF
 
 # create basic bootc containerfile
-cat <<EOF> Containerfile
+cat <<EOF> /root/Containerfile
 FROM registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER
 
 ADD etc /etc
@@ -168,3 +170,34 @@ RUN dnf install -y httpd
 RUN systemctl enable httpd
 
 EOF
+
+echo "10.0.2.2 builder.${GUID}.${DOMAIN}" >> /etc/hosts
+
+cat <<'EOF'> /root/wait_for_bootc_vm.sh
+echo "Waiting for VM 'bootc-vm' to be running..."
+VM_READY=false
+VM_STATE=""
+while true; do
+    VM_STATE=$(virsh domstate "bootc-vm" 2>/dev/null)
+    if [[ "$VM_STATE" == "running" ]]; then
+        VM_READY=true
+	sleep 10
+        break
+    fi
+    sleep 10
+done
+VM_IP=$(virsh domifaddr "bootc-vm" 2>/dev/null | awk '/ipv4/ {print $4}' | cut -d'/' -f1)
+echo "Waiting for SSH to be available..."
+NODE_READY=false
+while true; do
+    if ping -c 1 -W 1 ${VM_IP} &>/dev/null; then
+	NODE_READY=true
+	break
+    fi
+    sleep 10
+    VM_IP=$(virsh domifaddr "bootc-vm" 2>/dev/null | awk '/ipv4/ {print $4}' | cut -d'/' -f1)
+done
+sleep 5
+ssh core@${VM_IP}
+EOF
+chmod u+x /root/wait_for_bootc_vm.sh

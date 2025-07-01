@@ -185,16 +185,17 @@ while true; do
     fi
     sleep 10
 done
+VM_IP=$(virsh domifaddr "bootc_vm" 2>/dev/null | awk '/ipv4/ {print $4}' | cut -d'/' -f1)
 echo "Waiting for SSH to be available..."
 NODE_READY=false
 while true; do
-    if ping -c 1 -W 1 "bootc-vm" &>/dev/null; then
+    if ping -c 1 -W 1 ${VM_IP} &>/dev/null; then
 	NODE_READY=true
 	break
     fi
     sleep 10
 done
 sleep 5
-ssh root@bootc-vm
+ssh core@${VM_IP}
 EOF
 chmod u+x /root/wait_for_bootc_vm.sh

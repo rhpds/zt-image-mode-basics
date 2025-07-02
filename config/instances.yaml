@@ -2,8 +2,8 @@
 virtualmachines:
   - name: "builder"
     image: "rhel-9.5"
-    memory: "2G"
-    cores: 1
+    memory: "4G"
+    cores: 4
     image_size: "40G"
     tags:
       - key: "AnsibleGroup"

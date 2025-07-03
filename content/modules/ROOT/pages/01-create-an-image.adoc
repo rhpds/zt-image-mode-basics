@@ -13,15 +13,29 @@ Image mode uses standard container tools to define, build, and transport
 bootc images. Podman has already been installed on this host as a build
 environment, along with some additional files and required images.
 
+____
+[!NOTE] If you see an error related to authentication like the one
+below, you can use the `+reglogin+` command provided to log into the Red
+Hat Container Registry and re-run the command.
+____
+
+[source,nocopy]
+----
+Please login to the Red Hat Registry using your Customer Portal credentials.
+----
 
 == Examine the containerfile
 
-Image mode uses standard Containerfiles for defining the OS contents.
-[source,bash,run,subs=attributes+]
-----
-cat Containerfile
-----
+Switch to the link:tab-1[button label="`Containerfile`"
+background="`#ee0000`" color="`#c7c7c7`"] tab.
 
+Click on `+Containerfile+`.
+
+image:../assets/containerfile_scripteditor.png[../assets/containerfile_scripteditor]
+
+Image mode uses standard Containerfiles for defining the OS contents.
+
+[arabic]
 . The `+FROM+` line defines the base image, in this case our new
 `+bootc+` base images, not a typical UBI application base image.
 . The `+ADD+` line allows us to add the complete contents of a directory
@@ -35,14 +49,18 @@ images will become hosts, so these configuration directives used by
 container engines for launching processes don’t apply. We will have
 `+systemd+` running as PID1 once booted.
 
-image::containerfile_elements.png[]
+image:../assets/containerfile_elements.png[../assets/containerfile_elements]
+
+Once you are done examining the Containerfile, click on the
+link:tab-0[button label="`Terminal`" background="`#ee0000`"
+color="`#c7c7c7`"] tab.
 
 == Examining the configurations added
 
 We have a set of files we want to add to `+/etc+` on the host to affect
 system configuration. Let’s have a quick look at one of those.
 
-[source,bash,run,subs=attributes+]
+[source,bash,run]
 ----
 cat etc/sudoers.d/wheel
 ----

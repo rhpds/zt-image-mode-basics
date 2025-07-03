@@ -17,18 +17,9 @@ cat<<EOF> ~/.config/containers/auth.json
     }
   }
 EOF
-#podman login -u='1979710|lb1054-ney' -p=${REGISTRY_PULL_TOKEN} registry.redhat.io
+
 BOOTC_RHEL_VER=10.0
 podman pull registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER registry.redhat.io/rhel10/bootc-image-builder:$BOOTC_RHEL_VER
-
-# Some shortcuts for users
-# reglogin - uses podman secret to log into the terms based registry in case creds time out or initial pull fails
-# registry ENV variable -  the registry target created for the lab
-#printf ${REG_SVC_ACCT} | podman secret create regpass -
-#cat <<EOF >> /root/.bashrc
-#export REGISTRY="${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io:5000"
-#alias reglogin="podman login -u='1979710|rhel-tmm' --secret regpass registry.redhat.io"
-#EOF
 
 # set up SSL for fully functioning registry
 # Enable EPEL for RHEL 9
@@ -48,17 +39,11 @@ podman run --privileged -d \
   -e REGISTRY_HTTP_TLS_KEY=/certs/privkey.pem \
   quay.io/mmicene/registry:2
 
-# For the target bootc system build, we need to set up a few config files to operate in the lab environment
+# For the target bootc VM, we set up a few config files to operate in the lab environment
 # create sudoers drop in and etc structure to add to container
 mkdir -p ~/etc/sudoers.d/
 echo "%wheel  ALL=(ALL)   NOPASSWD: ALL" >> ~/etc/sudoers.d/wheel
 
-# create the etc/hosts override to let the target VM see the registry
-#echo $(getent hosts ${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io) >> ~/etc/hosts
-
-# add hostname to runtime variable
-
-#agent variable set CONTAINER_REGISTRY_ENDPOINT ${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io:5000
 
 # turn off complexity checks in target for passwords to ease the learner experience
 mkdir -p ~/etc/security
@@ -173,33 +158,33 @@ RUN systemctl enable httpd
 
 EOF
 
+# add expanded hostname to all hosts
 echo "10.0.2.2 builder.${GUID}.${DOMAIN}" >> /etc/hosts
+cp /etc/hosts etc/hosts
 
+# Configuartion for VM terminal to provide a better user experience
 cat <<'EOF'> /root/wait_for_bootc_vm.sh
 echo "Waiting for VM 'bootc-vm' to be running..."
 VM_READY=false
 VM_STATE=""
+VM_NAME=bootc-vm
 while true; do
-    VM_STATE=$(virsh domstate "bootc-vm" 2>/dev/null)
+    VM_STATE=$(virsh domstate "$VM_NAME" 2>/dev/null)
     if [[ "$VM_STATE" == "running" ]]; then
         VM_READY=true
-	sleep 10
         break
     fi
     sleep 10
 done
-VM_IP=$(virsh domifaddr "bootc-vm" 2>/dev/null | awk '/ipv4/ {print $4}' | cut -d'/' -f1)
 echo "Waiting for SSH to be available..."
 NODE_READY=false
 while true; do
-    if ping -c 1 -W 1 ${VM_IP} &>/dev/null; then
-	NODE_READY=true
-	break
+    if ping -c 1 -W 1 ${VM_NAME} &>/dev/null; then
+        NODE_READY=true
+        break
     fi
-    sleep 10
-    VM_IP=$(virsh domifaddr "bootc-vm" 2>/dev/null | awk '/ipv4/ {print $4}' | cut -d'/' -f1)
+    sleep 5
 done
-sleep 5
-ssh core@${VM_IP}
+ssh core@${VM_NAME}
 EOF
 chmod u+x /root/wait_for_bootc_vm.sh

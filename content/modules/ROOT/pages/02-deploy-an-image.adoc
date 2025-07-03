@@ -13,10 +13,9 @@ the target environment. For the purposes of this lab, we’ll create a
 QCOW2 image to be run on a KVM virtual machine. To build the QCOW2 image
 we’ll use a tool called `+bootc-image-builder+`.
 
-[NOTE]
-====
-This operation will take about 4 minutes to complete.
-====
+____
+[!NOTE] This operation will take about 4 minutes to complete.
+____
 
 [source,bash,run,subs=attributes+]
 ----
@@ -48,7 +47,7 @@ be copied to system storage using `+podman image scp+`.
 To launch a KVM guest, copy the QCOW2 disk image we created to the
 default libvirt storage pool.
 
-[source,bash,run,subs=attributes+]
+[source,bash,run]
 ----
 cp qcow2/disk.qcow2 /var/lib/libvirt/images/bootc-vm.qcow2
 ----
@@ -56,7 +55,7 @@ cp qcow2/disk.qcow2 /var/lib/libvirt/images/bootc-vm.qcow2
 Using `+virt-install+` we can define a simple VM and import the new disk
 image.
 
-[source,bash,run,subs=attributes+]
+[source,bash,run]
 ----
 virt-install --name bootc-vm \
 --disk /var/lib/libvirt/images/bootc-vm.qcow2 \
@@ -70,22 +69,22 @@ virt-install --name bootc-vm \
 
 Once the VM has been defined, we can start it.
 
-[source,bash,run,subs=attributes+]
+[source,bash,run]
 ----
 virsh start bootc-vm
 ----
 
 == SSH to the VM running our bootc image
 
-Next, log into the VM. Switch to the `VM SSH session` tab.
+Next, log into the VM. Switch to the link:tab-1[button label="`VM SSH
+session`" background="`#ee0000`" color="`#c7c7c7`"] tab.
 
-[NOTE] 
-====
-If the SSH session hasn’t connected or there is an error,
+____
+{empty}[!NOTE] If the SSH session hasn’t connected or there is an error,
 you can reconnect by clicking Refresh next to the tab name. The prompt
 will look like this.
-image::terminal_prompt.png[]
-====
+image:../assets/terminal_prompt.png[../assets/terminal_prompt]
+____
 
 Once the system has finished booting, you can log in with the following
 credentials. These were injected by `+bootc-image-builder+` when
@@ -97,29 +96,30 @@ Log into the vm with the following credentials.
 
 Password:
 
-[source,bash,run,subs=attributes+]
+[source,bash,run]
 ----
 redhat
 ----
 
 The initial image included Apache, so let’s check on it’s status
 
-[source,bash,run,subs=attributes+]
+[source,bash,run]
 ----
 systemctl status httpd --no-pager
 ----
 
 The output will look like this.
 
-image::httpd_service.png[]
+image:../assets/httpd_service.png[../assets/httpd_service]
 
 Let’s check if the editor `+vim+` was installed.
 
+[source,bash,run]
 ----
 which vim
 ----
 
-image::no_vim.png[]
+image:../assets/no_vim.png[../assets/no_vim]
 
 Somehow, we missed installing our standard editor!
 

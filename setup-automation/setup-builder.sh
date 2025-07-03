@@ -169,7 +169,7 @@ VM_READY=false
 VM_STATE=""
 VM_NAME=bootc-vm
 while true; do
-    VM_STATE=$(virsh domstate "$VM_NAME" 2>/dev/null)
+    VM_STATE=$(virsh domstate ${VM_NAME} 2>/dev/null)
     if [[ "$VM_STATE" == "running" ]]; then
         VM_READY=true
         break

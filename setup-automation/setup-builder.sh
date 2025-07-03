@@ -174,6 +174,7 @@ RUN systemctl enable httpd
 EOF
 
 echo "10.0.2.2 builder.${GUID}.${DOMAIN}" >> /etc/hosts
+cp /etc/hosts ~/etc/hosts
 
 cat <<'EOF'> /root/wait_for_bootc_vm.sh
 echo "Waiting for VM 'bootc-vm' to be running..."

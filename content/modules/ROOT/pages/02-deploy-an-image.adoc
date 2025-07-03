@@ -115,6 +115,7 @@ image::httpd_service.png[]
 
 Let’s check if the editor `+vim+` was installed.
 
+[source,bash,run,subs=attributes+]
 ----
 which vim
 ----

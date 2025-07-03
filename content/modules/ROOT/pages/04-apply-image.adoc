@@ -8,7 +8,6 @@ If the SSH session hasn’t connected or there is an error,
 you can reconnect by clicking Refresh next to the tab name. The prompt
 will look like this.
 image::terminal_prompt.png[]
-====
 
 Log into the vm with the following credentials.
 
@@ -18,6 +17,7 @@ Password:
 ----
 redhat
 ----
+====
 
 The `+bootc+` command is what controls the state of the running host and
 the available images on disk. This is how we get the current state, if
@@ -147,7 +147,8 @@ new password will be in effect.
 [NOTE]
 ====
 Remember to reconnect by clicking Refresh next to the tab
-name. The prompt will look like this.
+name or clicking the "Reconnect" button in the center of the tab. 
+The prompt will look like this.
 image::terminal_prompt.png[]
 ====
 

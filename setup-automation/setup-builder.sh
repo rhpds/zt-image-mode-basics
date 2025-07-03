@@ -160,7 +160,8 @@ EOF
 
 # add expanded hostname to all hosts
 echo "10.0.2.2 builder.${GUID}.${DOMAIN}" >> /etc/hosts
-cp /etc/hosts etc/hosts
+mkdir -p /root/etc/hosts
+cp /etc/hosts /root/etc/hosts
 
 # Configuartion for VM terminal to provide a better user experience
 cat <<'EOF'> /root/wait_for_bootc_vm.sh

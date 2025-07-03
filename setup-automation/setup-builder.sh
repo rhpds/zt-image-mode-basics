@@ -46,7 +46,7 @@ podman run --privileged -d \
   -v /etc/letsencrypt/live/builder.${GUID}.${DOMAIN}/privkey.pem:/certs/privkey.pem \
   -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/fullchain.pem \
   -e REGISTRY_HTTP_TLS_KEY=/certs/privkey.pem \
-  registry:2
+  quay.io/mmicene/registry:2
 
 # For the target bootc system build, we need to set up a few config files to operate in the lab environment
 # create sudoers drop in and etc structure to add to container

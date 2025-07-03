@@ -180,27 +180,25 @@ cat <<'EOF'> /root/wait_for_bootc_vm.sh
 echo "Waiting for VM 'bootc-vm' to be running..."
 VM_READY=false
 VM_STATE=""
+VM_NAME=bootc-vm
 while true; do
-    VM_STATE=$(virsh domstate "bootc-vm" 2>/dev/null)
+    VM_STATE=$(virsh domstate "$VM_NAME" 2>/dev/null)
     if [[ "$VM_STATE" == "running" ]]; then
         VM_READY=true
-	sleep 10
         break
     fi
     sleep 10
 done
-VM_IP=$(virsh domifaddr "bootc-vm" 2>/dev/null | awk '/ipv4/ {print $4}' | cut -d'/' -f1)
 echo "Waiting for SSH to be available..."
 NODE_READY=false
 while true; do
-    if ping -c 1 -W 1 ${VM_IP} &>/dev/null; then
-	NODE_READY=true
-	break
+    if ping -c 1 -W 1 ${VM_NAME} &>/dev/null; then
+        NODE_READY=true
+        break
     fi
-    sleep 10
-    VM_IP=$(virsh domifaddr "bootc-vm" 2>/dev/null | awk '/ipv4/ {print $4}' | cut -d'/' -f1)
+    sleep 5
 done
-sleep 5
-ssh core@${VM_IP}
+ssh core@${VM_NAME}
 EOF
+
 chmod u+x /root/wait_for_bootc_vm.sh

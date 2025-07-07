@@ -21,12 +21,20 @@ Image mode uses standard Containerfiles for defining the OS contents.
 ----
 cat Containerfile
 ----
+[source,dockerfile,nocopy]
+----
+FROM registry.redhat.io/rhel10/rhel-bootc:10.0 # <1>
 
-. The `+FROM+` line defines the base image, in this case our new
+ADD etc /etc # <2>
+
+RUN dnf install -y httpd # <3>
+RUN systemctl enable httpd
+----
+<1> The `+FROM+` line defines the base image, in this case our new
 `+bootc+` base images, not a typical UBI application base image.
-. The `+ADD+` line allows us to add the complete contents of a directory
+<2> The `+ADD+` line allows us to add the complete contents of a directory
 at once, just like an application container.
-. The `+RUN+` directives add software and start services, just like an
+<3> The `+RUN+` directives add software and start services, just like an
 application container.
 
 Unlike an application container, we’re using `+systemctl+` to enable the
@@ -34,8 +42,6 @@ service rather than an `+ENTRYPOINT+` or a `+CMD+` directive. These
 images will become hosts, so these configuration directives used by
 container engines for launching processes don’t apply. We will have
 `+systemd+` running as PID1 once booted.
-
-image::containerfile_elements.png[]
 
 == Examining the configurations added
 

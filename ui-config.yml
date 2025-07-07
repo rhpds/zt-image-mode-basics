@@ -19,5 +19,5 @@ antora:
 tabs:
   - name: "Build host"
     url: /wetty/ssh/root
-  - name: "Bootc VM"
+  - name: "VM SSH session"
     url: /wetty_bootc_vm/ssh/root

@@ -2,6 +2,8 @@ Sofware is controlled via the Containerfile. To change or add packages,
 they need to be defined here before build time. Updating already built
 images with later versions would only need a rebuild.
 
+Switch to the `Build host` terminal and open the `Containervile` for editing.
+
 To the end of the `+dnf install+` line, add `+vim+` to the list of
 packages installed.
 
@@ -11,6 +13,15 @@ vi Containerfile
 ----
 image:/containerfile_add_vim.png[]
 
+[source,dockerfile,nocopy]
+----
+FROM registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER
+
+ADD etc /etc
+
+RUN dnf install -y httpd vim # <1>
+RUN systemctl enable httpd
+----
 
 == Use podman to update the image.
 

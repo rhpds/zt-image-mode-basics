@@ -31,8 +31,8 @@ podman pull registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER registry.redhat
 #EOF
 
 # set up SSL for fully functioning registry
-# Enable EPEL for RHEL 9
-dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+# Enable EPEL for RHEL 10
+dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
 dnf install -y certbot
 
 # request certificates

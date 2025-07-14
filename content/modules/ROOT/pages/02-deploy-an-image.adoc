@@ -84,7 +84,7 @@ Next, log into the VM. Switch to the `VM SSH session` tab.
 If the SSH session hasn’t connected or there is an error,
 you can reconnect by clicking Refresh next to the tab name. The prompt
 will look like this.
-image::terminal_prompt.png[]
+image::terminal-prompt.png[]
 ====
 
 Once the system has finished booting, you can log in with the following
@@ -111,7 +111,7 @@ systemctl status httpd --no-pager
 
 The output will look like this.
 
-image::httpd_service.png[]
+image::httpd-service.png[]
 
 Let’s check if the editor `+vim+` was installed.
 
@@ -120,7 +120,7 @@ Let’s check if the editor `+vim+` was installed.
 which vim
 ----
 
-image::no_vim.png[]
+image::no-vim.png[]
 
 Somehow, we missed installing our standard editor!
 

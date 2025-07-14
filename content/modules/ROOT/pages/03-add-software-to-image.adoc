@@ -11,17 +11,18 @@ packages installed.
 ----
 vi Containerfile
 ----
-image:/containerfile_add_vim.png[]
 
 [source,dockerfile,nocopy]
 ----
-FROM registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER
+FROM registry.redhat.io/rhel10/rhel-bootc:10.0
 
 ADD etc /etc
 
 RUN dnf install -y httpd vim # <1>
 RUN systemctl enable httpd
 ----
+<1> Adding `vim` to this `RUN` line is the only update we need to make to install
+additional packages
 
 == Use podman to update the image.
 

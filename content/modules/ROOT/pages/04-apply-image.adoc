@@ -7,7 +7,7 @@ Click on the `VM SSH session` tab.
 If the SSH session hasn’t connected or there is an error,
 you can reconnect by clicking Refresh next to the tab name. The prompt will look like this.
 
-image::terminal_prompt.png[]
+image::terminal-prompt.png[]
 
 Remember the login password is `redhat`
 ====

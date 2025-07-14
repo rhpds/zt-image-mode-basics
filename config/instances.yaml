@@ -11,6 +11,13 @@ virtualmachines:
         value: "bastions"
     networks:
       - default
+    packages:
+      - podman
+      - skopeo
+      - virt-install
+      - libvirt
+      - qemu-kvm
+      - libvirt-nss
     terminals:
       - name: wetty_bootc_vm
         command: /root/wait_for_bootc_vm.sh

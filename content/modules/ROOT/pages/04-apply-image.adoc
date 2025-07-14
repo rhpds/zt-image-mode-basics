@@ -6,6 +6,7 @@ Click on the `VM SSH session` tab.
 ====
 If the SSH session hasn’t connected or there is an error,
 you can reconnect by clicking Refresh next to the tab name. The prompt will look like this.
+
 image::terminal_prompt.png[]
 
 Remember the login password is `redhat`
@@ -141,6 +142,7 @@ new password will be in effect.
 Remember to reconnect by clicking Refresh next to the tab
 name or clicking the "Reconnect" button in the center of the tab. 
 The prompt will look like this.
+
 image::terminal-prompt.png[]
 ====
 
@@ -166,7 +168,7 @@ which vim
 
 Here’s what you should see as output.
 
-image::itest-httpd-vim.png[]
+image::test-httpd-vim.png[]
 
 You’ve now created a new image mode system from a Containerfile and seen
 how to manage updates for the system. This should provide a good basis

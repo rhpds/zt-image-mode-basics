@@ -1,8 +1,7 @@
 #!/bin/bash
 set -euxo pipefail
 
-# Moved to instances.yaml Install libvirt and configure nss domain resolution
-# dnf -y install podman skopeo virt-install libvirt qemu-kvm libvirt-nss
+# Packages are in instances.yaml, turn on libvirtd and set up nss support
 systemctl enable --now libvirtd
 sed -i 's/hosts:\s\+ files/& libvirt libvirt_guest/' /etc/nsswitch.conf
 
@@ -17,18 +16,10 @@ cat<<EOF> ~/.config/containers/auth.json
     }
   }
 EOF
-#podman login -u='1979710|lb1054-ney' -p=${REGISTRY_PULL_TOKEN} registry.redhat.io
+
+# Pull the needed images to minimize waiting during the lab
 BOOTC_RHEL_VER=10.0
 podman pull registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER registry.redhat.io/rhel10/bootc-image-builder:$BOOTC_RHEL_VER
-
-# Some shortcuts for users
-# reglogin - uses podman secret to log into the terms based registry in case creds time out or initial pull fails
-# registry ENV variable -  the registry target created for the lab
-#printf ${REG_SVC_ACCT} | podman secret create regpass -
-#cat <<EOF >> /root/.bashrc
-#export REGISTRY="${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io:5000"
-#alias reglogin="podman login -u='1979710|rhel-tmm' --secret regpass registry.redhat.io"
-#EOF
 
 # set up SSL for fully functioning registry
 # Enable EPEL for RHEL 10
@@ -52,13 +43,6 @@ podman run --privileged -d \
 # create sudoers drop in and etc structure to add to container
 mkdir -p ~/etc/sudoers.d/
 echo "%wheel  ALL=(ALL)   NOPASSWD: ALL" >> ~/etc/sudoers.d/wheel
-
-# create the etc/hosts override to let the target VM see the registry
-#echo $(getent hosts ${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io) >> ~/etc/hosts
-
-# add hostname to runtime variable
-
-#agent variable set CONTAINER_REGISTRY_ENDPOINT ${HOSTNAME}.${INSTRUQT_PARTICIPANT_ID}.instruqt.io:5000
 
 # turn off complexity checks in target for passwords to ease the learner experience
 mkdir -p ~/etc/security
@@ -173,9 +157,12 @@ RUN systemctl enable httpd
 
 EOF
 
+# Add name based resolution for internal IPs
 echo "10.0.2.2 builder.${GUID}.${DOMAIN}" >> /etc/hosts
 cp /etc/hosts ~/etc/hosts
 
+# Script that manages the VM SSH session tab
+# Waits for the domain to start and networking before attempting to SSH to guest
 cat <<'EOF'> /root/wait_for_bootc_vm.sh
 echo "Waiting for VM 'bootc-vm' to be running..."
 VM_READY=false

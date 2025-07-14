@@ -1,12 +1,6 @@
 Welcome to this lab experience for Red Hat Enterprise Linux.
 
-{lab_name}
-
-{domain}
-
-{bastion_ssh_user_name}
-
-The system displayed beside this text is a Red Hat Enterprise Linux 9
+The build host displayed beside this text is a Red Hat Enterprise Linux 10
 system registered with Subscription Manager.
 
 Image mode uses standard container tools to define, build, and transport
@@ -21,6 +15,8 @@ Image mode uses standard Containerfiles for defining the OS contents.
 ----
 cat Containerfile
 ----
+
+
 [source,dockerfile,nocopy]
 ----
 FROM registry.redhat.io/rhel10/rhel-bootc:10.0 # <1>

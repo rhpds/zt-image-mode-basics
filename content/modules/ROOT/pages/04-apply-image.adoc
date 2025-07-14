@@ -5,18 +5,11 @@ Click on the `VM SSH session` tab.
 [NOTE]
 ====
 If the SSH session hasn’t connected or there is an error,
-you can reconnect by clicking Refresh next to the tab name. The prompt
-will look like this.
-image::terminal_prompt.png[]
+you can reconnect by clicking Refresh next to the tab name. The prompt will look like this.
 
-Log into the vm with the following credentials.
+image::terminal-prompt.png[]
 
-Password:
-
-[source,bash,run,subs=attributes+]
-----
-redhat
-----
+Remember the login password is `redhat`
 ====
 
 The `+bootc+` command is what controls the state of the running host and
@@ -33,7 +26,7 @@ You can see the booted image, and if there are any staged or rollback
 images on the host. The name, version, and digest for each image are
 listed in this base view. We’ll talk more about what that means later.
 
-[NOTE]
+[TIP]
 ====
 The `+bootc status+` command will detect if we pass the output
 to a pipe and automatically output the full status details in YAML. You
@@ -149,7 +142,8 @@ new password will be in effect.
 Remember to reconnect by clicking Refresh next to the tab
 name or clicking the "Reconnect" button in the center of the tab. 
 The prompt will look like this.
-image::terminal_prompt.png[]
+
+image::terminal-prompt.png[]
 ====
 
 Password:
@@ -174,7 +168,7 @@ which vim
 
 Here’s what you should see as output.
 
-image::test_httpd_vim.png[]
+image::test-httpd-vim.png[]
 
 You’ve now created a new image mode system from a Containerfile and seen
 how to manage updates for the system. This should provide a good basis

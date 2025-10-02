@@ -28,9 +28,21 @@ virtualmachines:
             protocol: TCP
             targetPort: 80
             name: builder-http
+      - name: builder-https
+        ports:
+          - port: 443
+            protocol: TCP
+            targetPort: 443
+            name: builder-https
     routes:
       - name: builder-http
         host: builder
         service: builder-http
         targetPort: 80
         tls: false
+        path: "/.well-known/"
+      - name: builder-https
+        host: builder
+        service: builder-https
+        targetPort: 443
+        tls: true

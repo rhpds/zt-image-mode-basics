@@ -26,15 +26,23 @@ podman pull registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER registry.redhat
 dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
 dnf install -y certbot
 
-# request certificates
-certbot certonly --standalone --preferred-challenges http -d builder.${GUID}.${DOMAIN} --non-interactive --agree-tos -m trackbot@instruqt.com -v
+# request certificates but don't log keys
+set +x
+certbot certonly --eab-kid "${ZEROSSL_EAB_KEY_ID}" --eab-hmac-key "${ZEROSSL_HMAC_KEY}" --server "https://acme.zerossl.com/v2/DV90" --standalone --preferred-challenges http -d builder-"${GUID}"."${DOMAIN}" --non-interactive --agree-tos -m trackbot@instruqt.com -v
+
+# Don't leak password to users
+rm /var/log/letsencrypt/letsencrypt.log
+
+# reset tracing
+set -x
 
 # run a local registry with the provided certs
 podman run --privileged -d \
   --name registry \
+  -p 443:5000 \
   -p 5000:5000 \
-  -v /etc/letsencrypt/live/builder.${GUID}.${DOMAIN}/fullchain.pem:/certs/fullchain.pem \
-  -v /etc/letsencrypt/live/builder.${GUID}.${DOMAIN}/privkey.pem:/certs/privkey.pem \
+  -v /etc/letsencrypt/live/builder-"${GUID}"."${DOMAIN}"/fullchain.pem:/certs/fullchain.pem \
+  -v /etc/letsencrypt/live/builder-"${GUID}"."${DOMAIN}"/privkey.pem:/certs/privkey.pem \
   -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/fullchain.pem \
   -e REGISTRY_HTTP_TLS_KEY=/certs/privkey.pem \
   quay.io/mmicene/registry:2
@@ -158,7 +166,8 @@ RUN systemctl enable httpd
 EOF
 
 # Add name based resolution for internal IPs
-echo "10.0.2.2 builder.${GUID}.${DOMAIN}" >> /etc/hosts
+echo "10.0.2.2 builder-${GUID}.${DOMAIN}" >> /etc/hosts
+echo "10.0.2.2 registry-${GUID}.${DOMAIN}" >> /etc/hosts
 cp /etc/hosts ~/etc/hosts
 
 # Script that manages the VM SSH session tab

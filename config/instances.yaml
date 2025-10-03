@@ -44,4 +44,4 @@ virtualmachines:
         host: builder
         service: builder
         targetPort: 5000
-        tls: true
+        tls: false

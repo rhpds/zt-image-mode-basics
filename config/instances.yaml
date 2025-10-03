@@ -28,11 +28,12 @@ virtualmachines:
             protocol: TCP
             targetPort: 80
             name: registry-http
+      
       - name: registry
         ports:
-          - port: 443
+          - port: 5000
             protocol: TCP
-            targetPort: 443
+            targetPort: 5000
             name: registry
     routes:
       - name: registry-http
@@ -41,8 +42,9 @@ virtualmachines:
         targetPort: 80
         tls: false
         path: "/.well-known/"
+      
       - name: registry
         host: registry
         service: registry
-        targetPort: 443
-        tls: true
+        targetPort: 5000
+        tls: false

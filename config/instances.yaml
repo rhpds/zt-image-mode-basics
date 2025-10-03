@@ -28,6 +28,7 @@ virtualmachines:
             protocol: TCP
             targetPort: 80
             name: builder-http
+
     routes:
       - name: builder-http
         host: builder

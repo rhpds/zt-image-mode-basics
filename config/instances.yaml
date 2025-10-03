@@ -22,29 +22,29 @@ virtualmachines:
       - name: wetty_bootc_vm
         command: /root/wait_for_bootc_vm.sh
     services:
-      - name: registry-http
+      - name: builder-http
         ports:
           - port: 80
             protocol: TCP
             targetPort: 80
-            name: registry-http
+            name: builder-http
       
-      - name: registry
+      - name: builder
         ports:
           - port: 5000
             protocol: TCP
             targetPort: 5000
-            name: registry
+            name: builder
     routes:
-      - name: registry-http
-        host: registry
-        service: registry-http
+      - name: builder-http
+        host: builder
+        service: builder-http
         targetPort: 80
         tls: false
         path: "/.well-known/"
       
-      - name: registry
-        host: registry
-        service: registry
+      - name: builder
+        host: builder
+        service: builder
         targetPort: 5000
         tls: false

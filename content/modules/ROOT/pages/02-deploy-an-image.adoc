@@ -27,7 +27,7 @@ podman run --rm --privileged \
         registry.redhat.io/rhel10/bootc-image-builder:10.0 \
         --type qcow2 \
         --config config.json \
-         builder.{guid}.{domain}:5000/test-bootc
+         builder-{guid}.{domain}/test-bootc
 ----
 
 This tool is a containerized version of image builder that includes the

@@ -39,6 +39,7 @@ set -x
 # run a local registry with the provided certs
 podman run --privileged -d \
   --name registry \
+  -p 443:5000 \
   -p 5000:5000 \
   -v /etc/letsencrypt/live/builder-"${GUID}"."${DOMAIN}"/fullchain.pem:/certs/fullchain.pem \
   -v /etc/letsencrypt/live/builder-"${GUID}"."${DOMAIN}"/privkey.pem:/certs/privkey.pem \

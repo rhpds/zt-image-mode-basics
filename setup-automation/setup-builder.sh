@@ -21,6 +21,9 @@ EOF
 BOOTC_RHEL_VER=10.0
 podman pull registry.redhat.io/rhel10/rhel-bootc:$BOOTC_RHEL_VER registry.redhat.io/rhel10/bootc-image-builder:$BOOTC_RHEL_VER
 
+# Manually remove credentials, logout won't work
+rm ~/.config/containers/auth.json
+
 # set up SSL for fully functioning registry
 # Enable EPEL for RHEL 10
 dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm

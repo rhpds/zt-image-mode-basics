@@ -79,3 +79,9 @@
       var: r_result
     when: r_result is defined
 
+  - name: Son't provision if stage was failed
+    ansible.builtin.fail:
+      msg: "Setup failed"
+    when:
+    - r_result is defined
+    - r_result.rc != 0

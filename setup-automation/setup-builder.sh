@@ -1,5 +1,6 @@
 #!/bin/bash
 set -ex
+# Use trap wtth -e 
 trap 'catch $? $LINENO' EXIT
 
 catch() {

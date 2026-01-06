@@ -1,12 +1,5 @@
 #!/bin/bash
-set -ex
-trap 'catch $? $LINENO' EXIT
-
-catch() {
-    if [ "$1" != "0" ]; then
-	echo "Exit code $1 on line $2"
-    fi
-}
+set -x
 
 # Packages are in instances.yaml, turn on libvirtd and set up nss support
 systemctl enable --now libvirtd
@@ -34,13 +27,6 @@ rm ~/.config/containers/auth.json
 # set up SSL for fully functioning registry
 # Enable EPEL for RHEL 10
 dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
-# Change to hosted mirror only
-sed -e '/^metalink=https:\/\/mirrors.fedoraproject.org\/metalink/ s/^/#/' \
-    -e '/^#baseurl=http:/ s/http/https/' \
-    -e '/^#baseurl=https:\/\/download.example/ s/^#//' \
-    -e '/^baseurl=https:\/\/download.example/ s_https://download.example_https://dl.fedoraproject.org_' \
-    -i /etc/yum.repos.d/epel*.repo
-
 dnf install -y certbot
 
 # request certificates but don't log keys

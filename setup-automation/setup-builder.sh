@@ -1,5 +1,12 @@
 #!/bin/bash
-set -x
+set -ex
+trap 'catch $? $LINENO' EXIT
+
+catch() {
+    if [ "$1" != "0" ]; then
+	echo "Exit code $1 on line $2"
+    fi
+}
 
 # Packages are in instances.yaml, turn on libvirtd and set up nss support
 systemctl enable --now libvirtd

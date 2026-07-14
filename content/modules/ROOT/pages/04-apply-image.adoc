@@ -1,6 +1,6 @@
 == Exploring system status
 
-=== _Click on the `VM SSH session` tab._
+==== _Click on the `VM SSH session` tab._
 
 [NOTE]
 ====

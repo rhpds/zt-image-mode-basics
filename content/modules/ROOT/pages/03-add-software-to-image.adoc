@@ -2,10 +2,9 @@ Sofware is controlled via the Containerfile. To change or add packages,
 they need to be defined here before build time. Updating already built
 images with later versions would only need a rebuild.
 
-Switch to the `Build host` terminal and open the `Containervile` for editing.
+=== _Switch to the `Build host` terminal_
 
-To the end of the `+dnf install+` line, add `+vim+` to the list of
-packages installed.
+Open the `Containervile` for editing and to the end of the `+dnf install+` line, add `+vim+` to the list of packages installed.
 
 [source,bash,run,subs=attributes+]
 ----

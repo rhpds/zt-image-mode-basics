@@ -77,7 +77,9 @@ virsh start bootc-vm
 
 == SSH to the VM running our bootc image
 
-Next, log into the VM. Switch to the `VM SSH session` tab.
+Next, log into the VM. 
+
+=== _Switch to the `VM SSH session` tab._
 
 [NOTE] 
 ====

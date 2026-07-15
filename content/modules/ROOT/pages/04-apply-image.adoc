@@ -170,6 +170,15 @@ Here’s what you should see as output.
 
 image::test-httpd-vim.png[]
 
+Let's take a last look at `bootc status` to see what changed.
+
+[source,bash,run,subs=attributes+]
+----
+sudo bootc status
+----
+
+Now we have a `rollback` section that details the image we installed and the newly applied update image. 
+
 You’ve now created a new image mode system from a Containerfile and seen
 how to manage updates for the system. This should provide a good basis
 to explore image mode for RHEL with your own standard builds and

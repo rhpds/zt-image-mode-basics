@@ -63,7 +63,7 @@ virt-install --name bootc-vm \
 --import \
 --memory 2048 \
 --graphics none \
---osinfo rhel9-unknown \
+--osinfo rhel10-unknown \
 --noautoconsole \
 --noreboot
 ----

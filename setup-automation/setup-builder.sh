@@ -13,6 +13,14 @@ catch() {
 systemctl enable --now libvirtd
 sed -i 's/hosts:\s\+ files/& libvirt libvirt_guest/' /etc/nsswitch.conf
 
+# Unregister and re-register the VM
+dnf -y remove katello-ca-consumer-*
+subscription-manager clean
+subscription-manager register --activationkey=$ACTIVATION_KEY --org=$ORG_ID --force
+
+# Install required packages
+dnf install -y podman skopeo virt-install libvirt qemu-kvm libvirt-nss
+
 # Log into terms based registry and stage bootc and bib images
 mkdir -p ~/.config/containers
 cat<<EOF> ~/.config/containers/auth.json

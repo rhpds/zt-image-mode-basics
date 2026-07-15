@@ -59,6 +59,8 @@
       DOMAIN: "{{ lookup('ansible.builtin.env', 'DOMAIN') }}"
       ZEROSSL_EAB_KEY_ID: "{{ zerossl_eab_key_id }}"
       ZEROSSL_HMAC_KEY: "{{ zerossl_hmac_key }}"
+      ACTIVATION_KEY: "{{ rhelbu_activation_key }}"
+      ORG_ID: "{{ rhelbu_org_id }}"
 
   - name: Output script result
     ansible.builtin.debug:

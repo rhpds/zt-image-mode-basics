@@ -2,10 +2,9 @@ Sofware is controlled via the Containerfile. To change or add packages,
 they need to be defined here before build time. Updating already built
 images with later versions would only need a rebuild.
 
-Switch to the `Build host` terminal and open the `Containervile` for editing.
+==== _Switch to the `Build host` terminal_
 
-To the end of the `+dnf install+` line, add `+vim+` to the list of
-packages installed.
+Open the `Containerfile` for editing and to the end of the `+dnf install+` line, add `+vim+` to the list of packages installed.
 
 [source,bash,run,subs=attributes+]
 ----
@@ -14,7 +13,7 @@ vi Containerfile
 
 [source,dockerfile,nocopy]
 ----
-FROM registry.redhat.io/rhel10/rhel-bootc:10.1
+FROM registry.redhat.io/rhel10/rhel-bootc:10.2
 
 ADD etc /etc
 

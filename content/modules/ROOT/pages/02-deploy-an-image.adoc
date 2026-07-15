@@ -24,7 +24,7 @@ podman run --rm --privileged \
         --volume .:/output \
         --volume ./config.json:/config.json \
         --volume /var/lib/containers/storage:/var/lib/containers/storage \
-        registry.redhat.io/rhel10/bootc-image-builder:10.1 \
+        registry.redhat.io/rhel10/bootc-image-builder:10.2 \
         --type qcow2 \
         --config config.json \
          builder-{guid}.{domain}/test-bootc
@@ -63,7 +63,7 @@ virt-install --name bootc-vm \
 --import \
 --memory 2048 \
 --graphics none \
---osinfo rhel9-unknown \
+--osinfo rhel10-unknown \
 --noautoconsole \
 --noreboot
 ----
@@ -77,7 +77,9 @@ virsh start bootc-vm
 
 == SSH to the VM running our bootc image
 
-Next, log into the VM. Switch to the `VM SSH session` tab.
+Next, log into the VM. 
+
+==== _Switch to the `VM SSH session` tab._
 
 [NOTE] 
 ====

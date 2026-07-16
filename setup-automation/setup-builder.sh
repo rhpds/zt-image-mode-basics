@@ -9,7 +9,15 @@ catch() {
     fi
 }
 
-# Packages are in instances.yaml, turn on libvirtd and set up nss support
+# Unregister and re-register the VM
+dnf -y remove katello-ca-consumer-*
+subscription-manager clean
+subscription-manager register --activationkey=$ACTIVATION_KEY --org=$ORG_ID --force
+
+# Install required packages
+dnf install -y podman skopeo virt-install libvirt qemu-kvm libvirt-nss
+
+# Turn on libvirtd and set up nss support
 systemctl enable --now libvirtd
 sed -i 's/hosts:\s\+ files/& libvirt libvirt_guest/' /etc/nsswitch.conf
 

@@ -61,6 +61,8 @@
       ZEROSSL_HMAC_KEY: "{{ zerossl_hmac_key }}"
       ACTIVATION_KEY: "{{ rhelbu_activation_key }}"
       ORG_ID: "{{ rhelbu_org_id }}"
+      GIT_REPO: "{{ lookup('ansible.builtin.env', 'GIT_REPO_URL') }}"
+      GIT_BRANCH: "{{ lookup('ansible.builtin.env', 'GIT_REPO_REF') }}"
 
   - name: Output script result
     ansible.builtin.debug:
@@ -81,7 +83,7 @@
       var: r_result
     when: r_result is defined
 
-  - name: Son't provision if stage was failed
+  - name: Don't provision if stage was failed
     ansible.builtin.fail:
       msg: "Setup failed"
     when:

@@ -21,6 +21,9 @@ dnf install -y podman skopeo virt-install libvirt qemu-kvm libvirt-nss
 systemctl enable --now libvirtd
 sed -i 's/hosts:\s\+ files/& libvirt libvirt_guest/' /etc/nsswitch.conf
 
+# Fix rootful podman bridge
+sysctl -w net.ipv4.ip_forward=1
+
 # Log into terms based registry and stage bootc and bib images
 mkdir -p ~/.config/containers
 cat<<EOF> ~/.config/containers/auth.json

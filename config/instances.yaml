@@ -21,6 +21,12 @@ virtualmachines:
             protocol: TCP
             targetPort: 80
             name: builder-http
+      - name: registry
+        ports:
+          - port: 443
+            protocol: TCP
+            targetPort: 443
+            name: registry
 
     routes:
       - name: builder-http
@@ -28,3 +34,8 @@ virtualmachines:
         service: builder-http
         targetPort: 80
         tls: false
+      - name: registry
+        host: builder
+        service: registry
+        targetPort: 443
+        tls: true

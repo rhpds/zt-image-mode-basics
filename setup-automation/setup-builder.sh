@@ -18,6 +18,7 @@ git clone --depth=1 https://github.com/rhel-labs/lab-setup "${LIBDIR}"
 # --- lab configuration ---
 BOOTC_RHEL_VER=10.2
 BUILDER_HOST="builder-${GUID}.${DOMAIN}"
+sysctl -w net.ipv4.ip_forward=1
 # -------------------------
 
 setup_libvirt

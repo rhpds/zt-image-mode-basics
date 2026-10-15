@@ -9,6 +9,27 @@ catch() {
     fi
 }
 
+# GCP agents left in image cause issues
+systemctl stop \
+  google-disk-expand.service \
+  google-guest-agent.service \
+  google-osconfig-agent.service \
+  google-oslogin-cache.timer \
+  google-startup-scripts.service \
+  google-guest-agent-manager.service \
+  google-guest-compat-manager.service \
+  google-oslogin-cache.service \
+  google-shutdown-scripts.service || true
+
+dnf -y remove \
+  google-guest-agent \
+  google-compute-engine-oslogin \
+  google-compute-engine \
+  google-osconfig-agent || true
+
+echo "GCP agents removed" >> /tmp/progress.log
+
+
 # Unregister and re-register the VM
 dnf -y remove katello-ca-consumer-*
 subscription-manager clean
